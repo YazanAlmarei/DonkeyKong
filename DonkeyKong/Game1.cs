@@ -8,14 +8,27 @@ using System.IO;
 namespace DonkeyKong
 {
     public class Game1 : Game
-    {
+    {      
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-
+        Texture2D theMonkey;
+        Texture2D queen;
+        Texture2D mainMenu;
 
         Tile[,] tiles;
 
+        SpriteFont textFont;
+        int lives = 3;
+
+        MouseState mouseState;
+        KeyboardState currentKeyboardState;
+        KeyboardState oldKeyboardState;
+        GameState gameState;
+
+        Random random;
+
+        public enum GameState { Menu = 0, Game = 1, PostGame = 2 }
 
         public Game1()
         {
@@ -42,6 +55,10 @@ namespace DonkeyKong
             Texture2D bridgeLadderTex = Content.Load<Texture2D>("bridgeLadder");
             Texture2D emptyTex = Content.Load<Texture2D>("empty");
             Texture2D ladderTex = Content.Load<Texture2D>("Ladder");
+            theMonkey = Content.Load<Texture2D>("DonkeyKong");
+            queen = Content.Load<Texture2D>("pauline");
+            textFont = Content.Load<SpriteFont>("File");
+            mainMenu = Content.Load<Texture2D>("start");
 
             List<string> strings = new List<string>();
             StreamReader sr = new StreamReader("mapTXT.txt");
@@ -88,24 +105,79 @@ namespace DonkeyKong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            currentKeyboardState = Keyboard.GetState();
+            random = new Random();
 
-            base.Update(gameTime);
+            switch (gameState)
+            {
+
+                case GameState.Menu:
+
+                    if (currentKeyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
+                    {
+                        gameState = GameState.Game;
+                    }
+
+                    break;
+
+
+
+                case GameState.Game:
+                    break;
+
+
+
+                case GameState.PostGame:
+                    break;
+
+
+            }
+
+
+                    // TODO: Add your update logic here
+
+                    base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
 
-            for (int i = 0; i < tiles.GetLength(0); i++)
+            switch (gameState)
             {
-                for (int j = 0; j < tiles.GetLength(1); j++)
-                {
-                    tiles[i, j].Draw(spriteBatch);
-                }
+
+                case GameState.Menu:
+                    spriteBatch.Draw(mainMenu, Vector2.Zero, Color.White);
+                    spriteBatch.DrawString(textFont, "Press Enter to play !", new Vector2(370, 15), Color.White);
+
+                    break;
+
+
+
+                case GameState.Game:
+                    for (int i = 0; i < tiles.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < tiles.GetLength(1); j++)
+                        {
+                            tiles[i, j].Draw(spriteBatch);
+                        }
+                    }
+
+                    spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
+                    spriteBatch.Draw(queen, new Vector2(450, 15), Color.White);
+
+                    break;
+
+
+
+                case GameState.PostGame:
+                    break;
+
+
             }
 
+            
 
             spriteBatch.End();
 
