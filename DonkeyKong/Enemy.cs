@@ -11,5 +11,6 @@ namespace DonkeyKong
 {
     internal class Enemy
     {
+
     }
 }

@@ -120,16 +120,15 @@ namespace DonkeyKong
 
                     break;
 
-
-
                 case GameState.Game:
+
+
                     break;
-
-
 
                 case GameState.PostGame:
-                    break;
 
+
+                    break;
 
             }
 
@@ -149,11 +148,9 @@ namespace DonkeyKong
 
                 case GameState.Menu:
                     spriteBatch.Draw(mainMenu, Vector2.Zero, Color.White);
-                    spriteBatch.DrawString(textFont, "Press Enter to play !", new Vector2(370, 15), Color.White);
+                    spriteBatch.DrawString(textFont, "You must avoid Donkey Kong and save Pauline! Press Enter to play!", new Vector2(240, 430), Color.Red);
 
                     break;
-
-
 
                 case GameState.Game:
                     for (int i = 0; i < tiles.GetLength(0); i++)
@@ -166,12 +163,11 @@ namespace DonkeyKong
 
                     spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
                     spriteBatch.Draw(queen, new Vector2(450, 15), Color.White);
-
                     break;
 
-
-
                 case GameState.PostGame:
+
+
                     break;
 
 
