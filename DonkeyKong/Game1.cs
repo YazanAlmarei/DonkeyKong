@@ -148,7 +148,7 @@ namespace DonkeyKong
 
                 case GameState.Menu:
                     spriteBatch.Draw(mainMenu, Vector2.Zero, Color.White);
-                    spriteBatch.DrawString(textFont, "You must avoid Donkey Kong and save Pauline! Press Enter to play!", new Vector2(240, 430), Color.Red);
+                    spriteBatch.DrawString(textFont, "You must avoid Donkey Kong and save Pauline! Press Enter to play!", new Vector2(190, 430), Color.Red);
 
                     break;
 
@@ -160,6 +160,8 @@ namespace DonkeyKong
                             tiles[i, j].Draw(spriteBatch);
                         }
                     }
+
+                    spriteBatch.DrawString(textFont, "Lives = " + lives, Vector2.Zero, Color.Red);
 
                     spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
                     spriteBatch.Draw(queen, new Vector2(450, 15), Color.White);
