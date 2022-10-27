@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace DonkeyKong
 {
-    internal class Player
+    public class Player
     {
+        
+
     }
 }

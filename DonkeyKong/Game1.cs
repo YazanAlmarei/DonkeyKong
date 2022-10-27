@@ -15,6 +15,8 @@ namespace DonkeyKong
         Texture2D theMonkey;
         Texture2D queen;
         Texture2D mainMenu;
+        Texture2D marioTex;
+        
 
         Tile[,] tiles;
 
@@ -29,6 +31,8 @@ namespace DonkeyKong
         Random random;
 
         public enum GameState { Menu = 0, Game = 1, PostGame = 2 }
+
+
 
         public Game1()
         {
@@ -59,6 +63,7 @@ namespace DonkeyKong
             queen = Content.Load<Texture2D>("pauline");
             textFont = Content.Load<SpriteFont>("File");
             mainMenu = Content.Load<Texture2D>("start");
+            marioTex = Content.Load<Texture2D>("SuperMarioFront");
 
             List<string> strings = new List<string>();
             StreamReader sr = new StreamReader("mapTXT.txt");
@@ -95,7 +100,10 @@ namespace DonkeyKong
                     {
                         tiles[i, j] = new Tile(ladderTex, new Vector2(ladderTex.Width * i, ladderTex.Height * j), false);
                     }
+                    
                 }
+                
+
             }
 
         }
@@ -105,6 +113,7 @@ namespace DonkeyKong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            
             currentKeyboardState = Keyboard.GetState();
             random = new Random();
 
@@ -123,6 +132,8 @@ namespace DonkeyKong
                 case GameState.Game:
 
 
+
+
                     break;
 
                 case GameState.PostGame:
@@ -131,9 +142,6 @@ namespace DonkeyKong
                     break;
 
             }
-
-
-                    // TODO: Add your update logic here
 
                     base.Update(gameTime);
         }
@@ -161,6 +169,8 @@ namespace DonkeyKong
                         }
                     }
 
+                    
+
                     spriteBatch.DrawString(textFont, "Lives = " + lives, Vector2.Zero, Color.Red);
 
                     spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
@@ -178,8 +188,6 @@ namespace DonkeyKong
             
 
             spriteBatch.End();
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }
