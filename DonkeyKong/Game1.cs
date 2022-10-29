@@ -14,11 +14,12 @@ namespace DonkeyKong
 
         Texture2D theMonkey;
         Texture2D queen;
-        Texture2D mainMenu;
+        Texture2D mainMenu;   
         Texture2D marioTex;
+
         
 
-        Tile[,] tiles;
+        public Tile[,] tiles;
 
         SpriteFont textFont;
         int lives = 3;
@@ -89,6 +90,7 @@ namespace DonkeyKong
                     else if (strings[j][i] == 'C')
                     {
                         tiles[i, j] = new Tile(bridgeLadderTex, new Vector2(bridgeLadderTex.Width * i, bridgeLadderTex.Height * j), false);
+
                     }
 
                     else if (strings[j][i] == 'E')
@@ -99,7 +101,7 @@ namespace DonkeyKong
                     else if (strings[j][i] == 'L')
                     {
                         tiles[i, j] = new Tile(ladderTex, new Vector2(ladderTex.Width * i, ladderTex.Height * j), false);
-                    }
+                    } 
                     
                 }
                 
@@ -168,8 +170,6 @@ namespace DonkeyKong
                             tiles[i, j].Draw(spriteBatch);
                         }
                     }
-
-                    
 
                     spriteBatch.DrawString(textFont, "Lives = " + lives, Vector2.Zero, Color.Red);
 
