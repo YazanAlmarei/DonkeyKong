@@ -15,8 +15,7 @@ namespace DonkeyKong
 
         Texture2D theMonkey;
         Texture2D queen;
-        Texture2D mainMenu;   
-        Texture2D marioTex;
+        Texture2D mainMenu;
         private Player player;
 
 
@@ -65,8 +64,6 @@ namespace DonkeyKong
             queen = Content.Load<Texture2D>("pauline");
             textFont = Content.Load<SpriteFont>("File");
             mainMenu = Content.Load<Texture2D>("start");
-            //marioTex = Content.Load<Texture2D>("SuperMarioFront");
-
             var texture = Content.Load<Texture2D>("SuperMarioFront");
             player = new Player(texture);
             player.Position = new Vector2(0, 600);

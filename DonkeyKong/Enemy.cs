@@ -32,9 +32,9 @@ namespace DonkeyKong
             enemyRect = new Rectangle((int)enemyPos.X, (int)enemyPos.Y, enemyTex.Width, enemyTex.Height);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch enemySpriteBatch)
         {
-            spriteBatch.Draw(enemyTex, enemyPos, Color.White);
+            enemySpriteBatch.Draw(enemyTex, enemyPos, Color.White);
         }
 
         public bool IsTouched(int x, int y)

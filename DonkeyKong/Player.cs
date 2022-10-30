@@ -14,6 +14,7 @@ namespace DonkeyKong
         private Texture2D _texture;
 
         public Vector2 Position;
+        Rectangle rectangle;
 
         public float Speed = 5f;
 
@@ -26,6 +27,9 @@ namespace DonkeyKong
 
         public void Update()
         {
+
+            rectangle = new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height);
+
             /*if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
                 Position.Y -= Speed;
