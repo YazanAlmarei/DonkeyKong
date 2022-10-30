@@ -16,9 +16,9 @@ namespace DonkeyKong
         Texture2D theMonkey;
         Texture2D queen;
         Texture2D mainMenu;
+        Texture2D winPic;
+
         private Player player;
-
-
         public Tile[,] tiles;
 
         SpriteFont textFont;
@@ -60,10 +60,13 @@ namespace DonkeyKong
             Texture2D bridgeLadderTex = Content.Load<Texture2D>("bridgeLadder");
             Texture2D emptyTex = Content.Load<Texture2D>("empty");
             Texture2D ladderTex = Content.Load<Texture2D>("Ladder");
+
             theMonkey = Content.Load<Texture2D>("DonkeyKong");
             queen = Content.Load<Texture2D>("pauline");
             textFont = Content.Load<SpriteFont>("File");
             mainMenu = Content.Load<Texture2D>("start");
+            winPic = Content.Load<Texture2D>("win");
+
             var texture = Content.Load<Texture2D>("SuperMarioFront");
             player = new Player(texture);
             player.Position = new Vector2(0, 600);
@@ -138,11 +141,14 @@ namespace DonkeyKong
 
 
 
+
                     break;
 
                 case GameState.PostGame:
-
-
+                    if (currentKeyboardState.IsKeyDown(Keys.Enter) && oldKeyboardState.IsKeyUp(Keys.Enter))
+                    {
+                        gameState = GameState.Menu;
+                    }
                     break;
 
             }
@@ -172,15 +178,17 @@ namespace DonkeyKong
                             tiles[i, j].Draw(spriteBatch);
                         }
                     }
-                    player.Draw(spriteBatch);
+                    
+                    
                     spriteBatch.DrawString(textFont, "Lives = " + lives, Vector2.Zero, Color.Red);
-
                     spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
                     spriteBatch.Draw(queen, new Vector2(450, 15), Color.White);
+                    player.Draw(spriteBatch);
+
                     break;
 
                 case GameState.PostGame:
-
+                    spriteBatch.Draw(winPic, Vector2.Zero, Color.White);
 
                     break;
 
