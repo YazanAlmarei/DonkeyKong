@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DonkeyKong
 {
-    public class Sprite
+    public class Player
     {
         private Texture2D _texture;
 
@@ -17,10 +17,12 @@ namespace DonkeyKong
 
         public float Speed = 5f;
 
-        public Sprite(Texture2D texture)
+        public Player(Texture2D texture)
         {
             _texture = texture;
         }
+
+
 
         public void Update()
         {

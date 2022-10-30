@@ -17,7 +17,7 @@ namespace DonkeyKong
         Texture2D queen;
         Texture2D mainMenu;   
         Texture2D marioTex;
-        private Sprite _sprite1;
+        private Player player;
 
 
         public Tile[,] tiles;
@@ -68,8 +68,8 @@ namespace DonkeyKong
             //marioTex = Content.Load<Texture2D>("SuperMarioFront");
 
             var texture = Content.Load<Texture2D>("SuperMarioFront");
-            _sprite1 = new Sprite(texture);
-            _sprite1.Position = new Vector2(0, 600);
+            player = new Player(texture);
+            player.Position = new Vector2(0, 600);
 
             List<string> strings = new List<string>();
             StreamReader sr = new StreamReader("mapTXT.txt");
@@ -137,7 +137,7 @@ namespace DonkeyKong
                     break;
 
                 case GameState.Game:
-                    _sprite1.Update();
+                    player.Update();
 
 
 
@@ -175,7 +175,7 @@ namespace DonkeyKong
                             tiles[i, j].Draw(spriteBatch);
                         }
                     }
-                    _sprite1.Draw(spriteBatch);
+                    player.Draw(spriteBatch);
                     spriteBatch.DrawString(textFont, "Lives = " + lives, Vector2.Zero, Color.Red);
 
                     spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
