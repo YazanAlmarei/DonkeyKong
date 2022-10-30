@@ -9,28 +9,42 @@ using System.Threading.Tasks;
 
 namespace DonkeyKong
 {
-    public class Player
+    public class Sprite
     {
-        public Vector2 position;
-        public Texture2D texture;
-        
+        private Texture2D _texture;
 
-        public Player(Texture2D texture, Vector2 position)
+        public Vector2 Position;
+
+        public float Speed = 5f;
+
+        public Sprite(Texture2D texture)
         {
-            this.texture = texture;
-            this.position = position;
+            _texture = texture;
         }
 
         public void Update()
         {
-            
+            /*if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                Position.Y -= Speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                Position.Y += Speed;
+            }*/
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                Position.X -= Speed;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                Position.X += Speed;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(_texture, Position, Color.White);
         }
-        
-
     }
 }

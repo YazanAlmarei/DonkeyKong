@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +17,8 @@ namespace DonkeyKong
         Texture2D queen;
         Texture2D mainMenu;   
         Texture2D marioTex;
+        private Sprite _sprite1;
 
-        
 
         public Tile[,] tiles;
 
@@ -64,7 +65,11 @@ namespace DonkeyKong
             queen = Content.Load<Texture2D>("pauline");
             textFont = Content.Load<SpriteFont>("File");
             mainMenu = Content.Load<Texture2D>("start");
-            marioTex = Content.Load<Texture2D>("SuperMarioFront");
+            //marioTex = Content.Load<Texture2D>("SuperMarioFront");
+
+            var texture = Content.Load<Texture2D>("SuperMarioFront");
+            _sprite1 = new Sprite(texture);
+            _sprite1.Position = new Vector2(0, 600);
 
             List<string> strings = new List<string>();
             StreamReader sr = new StreamReader("mapTXT.txt");
@@ -132,7 +137,7 @@ namespace DonkeyKong
                     break;
 
                 case GameState.Game:
-
+                    _sprite1.Update();
 
 
 
@@ -150,7 +155,7 @@ namespace DonkeyKong
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
             switch (gameState)
@@ -170,7 +175,7 @@ namespace DonkeyKong
                             tiles[i, j].Draw(spriteBatch);
                         }
                     }
-
+                    _sprite1.Draw(spriteBatch);
                     spriteBatch.DrawString(textFont, "Lives = " + lives, Vector2.Zero, Color.Red);
 
                     spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
