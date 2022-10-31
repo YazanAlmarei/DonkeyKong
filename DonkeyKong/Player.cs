@@ -30,11 +30,11 @@ namespace DonkeyKong
 
             rectangle = new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height);
 
-            /*if (Keyboard.GetState().IsKeyDown(Keys.W))
+            /*if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 Position.Y -= Speed;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 Position.Y += Speed;
             }*/
