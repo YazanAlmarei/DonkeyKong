@@ -11,46 +11,78 @@ namespace DonkeyKong
 {
     public class Player
     {
-        private Texture2D _texture;
+        public Vector2 position;
+        public Texture2D texture;
 
-        public Vector2 Position;
-        Rectangle rectangle;
+        Vector2 destination;
+        Vector2 direction;
+        float speed = 100.0f;
+        bool moving = false;
 
-        public float Speed = 5f;
+        bool climbUp = false;
+        bool climbDown = false;
 
-        public Player(Texture2D texture)
+        public Player(Texture2D texture, Vector2 position)
         {
-            _texture = texture;
+            this.texture = texture;
+            this.position = position;
         }
 
-
-
-        public void Update()
+        public void ChangeDirection(Vector2 dir)
         {
+            direction = dir;
+            Vector2 newDestination = position + direction * 40.0f;
 
-            rectangle = new Rectangle((int)Position.X, (int)Position.Y, _texture.Width, _texture.Height);
-
-            /*if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            
+            if (!Game1.GetTileAtPosition(newDestination))
             {
-                Position.Y -= Speed;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                Position.Y += Speed;
-            }*/
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                Position.X -= Speed;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                Position.X += Speed;
+                destination = newDestination;
+                moving = true;
             }
         }
+
+        public void Update(GameTime gameTime)
+        {
+            if (!moving)
+            {
+                
+                if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    ChangeDirection(new Vector2(-1, 0));
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                {
+                    ChangeDirection(new Vector2(1, 0));
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                {
+                    ChangeDirection(new Vector2(0, -1));
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                {
+                    ChangeDirection(new Vector2(0, 1));
+                }
+
+
+            }
+            else
+            {
+                position += direction * speed *
+                (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                
+                if (Vector2.Distance(position, destination) < 1)
+                {
+                    position = destination;
+                    moving = false;
+                }
+            }
+        }
+
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture, Position, Color.White);
+            spriteBatch.Draw(texture, position, Color.White);
         }
     }
 }

@@ -19,8 +19,8 @@ namespace DonkeyKong
         Texture2D winPic;
         Texture2D losePic;
 
-        private Player player;
-        public Tile[,] tiles;
+        Player player;
+        static Tile[,] tiles;
 
         SpriteFont textFont;
         int lives = 3;
@@ -34,6 +34,7 @@ namespace DonkeyKong
 
         public enum GameState { Menu = 0, Game = 1, PostGame = 2 }
 
+        
 
 
         public Game1()
@@ -44,6 +45,11 @@ namespace DonkeyKong
             graphics.PreferredBackBufferWidth = 1000;
             graphics.PreferredBackBufferHeight = 663;
 
+        }
+
+        public static bool GetTileAtPosition(Vector2 vec)
+        {
+            return tiles[(int)vec.X / 50, (int)vec.Y / 50].bridgee;
         }
 
         protected override void Initialize()
@@ -61,6 +67,7 @@ namespace DonkeyKong
             Texture2D bridgeLadderTex = Content.Load<Texture2D>("bridgeLadder");
             Texture2D emptyTex = Content.Load<Texture2D>("empty");
             Texture2D ladderTex = Content.Load<Texture2D>("Ladder");
+            Texture2D playerTex = Content.Load<Texture2D>("SuperMarioFront");
 
             theMonkey = Content.Load<Texture2D>("DonkeyKong");
             queen = Content.Load<Texture2D>("pauline");
@@ -70,9 +77,9 @@ namespace DonkeyKong
             losePic = Content.Load<Texture2D>("loose");
 
 
-            var texture = Content.Load<Texture2D>("SuperMarioFront");
-            player = new Player(texture);
-            player.Position = new Vector2(0, 600);
+            //var texture = Content.Load<Texture2D>("SuperMarioFront");
+            
+           
 
             List<string> strings = new List<string>();
             StreamReader sr = new StreamReader("mapTXT.txt");
@@ -106,9 +113,16 @@ namespace DonkeyKong
                         tiles[i, j] = new Tile(emptyTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j), false);
                     }
 
+                    else if (strings[j][i] == 'W')
+                    {
+                        tiles[i, j] = new Tile(emptyTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j), false);
+                    }
+
                     else if (strings[j][i] == 'L')
                     {
                         tiles[i, j] = new Tile(ladderTex, new Vector2(ladderTex.Width * i, ladderTex.Height * j), false);
+
+                        player = new Player(playerTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j));
                     } 
                     
                 }
@@ -140,7 +154,7 @@ namespace DonkeyKong
                     break;
 
                 case GameState.Game:
-                    player.Update();
+                    player.Update(gameTime);
 
                     //if mario touches pauline >> gameState = GameState.PostGame
 
