@@ -49,7 +49,7 @@ namespace DonkeyKong
 
         public static bool GetTileAtPosition(Vector2 vec)
         {
-            return tiles[(int)vec.X / 50, (int)vec.Y / 50].bridgee;
+            return tiles[(int)vec.X / 40, (int)vec.Y / 40].bridgee;
         }
 
         protected override void Initialize()
@@ -99,7 +99,7 @@ namespace DonkeyKong
 
                     if (strings[j][i] == 'B')
                     {
-                        tiles[i, j] = new Tile(bridgeTileTex, new Vector2(bridgeTileTex.Width * i, bridgeTileTex.Height * j), false);
+                        tiles[i, j] = new Tile(bridgeTileTex, new Vector2(bridgeTileTex.Width * i, bridgeTileTex.Height * j), true);
                     }
 
                     else if (strings[j][i] == 'C')
