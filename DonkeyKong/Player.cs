@@ -13,10 +13,10 @@ namespace DonkeyKong
     {
         public Vector2 position;
         public Texture2D texture;
-        public Rectangle rectangle;
+        //Rectangle rectangle;
 
         int screenWidth = 1000;
-        int screenHeight = 663;
+        int screenHeight = 640;
 
         Vector2 destination;
         Vector2 direction;
@@ -47,6 +47,9 @@ namespace DonkeyKong
 
         public void Update(GameTime gameTime)
         {
+
+            //rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+
             if (!moving)
             {
                 
@@ -67,9 +70,7 @@ namespace DonkeyKong
                     ChangeDirection(new Vector2(0, 1));
                 }
 
-                rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
-
-                if(rectangle.X <= 0)
+                /*if(rectangle.X <= 0)
                 {
                     rectangle.X = 0;
                 }
@@ -86,7 +87,7 @@ namespace DonkeyKong
                 if (rectangle.Y + texture.Height >= screenHeight)
                 {
                     rectangle.Y = screenHeight - texture.Height;
-                }
+                }*/
 
 
             }
