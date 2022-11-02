@@ -13,18 +13,11 @@ namespace DonkeyKong
     {
         public Vector2 position;
         public Texture2D texture;
-        //Rectangle rectangle;
-
-        int screenWidth = 1000;
-        int screenHeight = 640;
 
         Vector2 destination;
         Vector2 direction;
         float speed = 100.0f;
         bool moving = false;
-
-        bool climbUp = false;
-        bool climbDown = false;
 
         public Player(Texture2D texture, Vector2 position)
         {
@@ -42,13 +35,13 @@ namespace DonkeyKong
             {
                 destination = newDestination;
                 moving = true;
+
             }
         }
 
         public void Update(GameTime gameTime)
         {
 
-            //rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
 
             if (!moving)
             {
@@ -70,25 +63,6 @@ namespace DonkeyKong
                     ChangeDirection(new Vector2(0, 1));
                 }
 
-                /*if(rectangle.X <= 0)
-                {
-                    rectangle.X = 0;
-                }
-
-                if(rectangle.X + texture.Width >= screenWidth)
-                {
-                    rectangle.X = screenWidth - texture.Width;
-                }
-
-                if(rectangle.Y <= 0)
-                {
-                    rectangle.Y = 0;
-                }
-                if (rectangle.Y + texture.Height >= screenHeight)
-                {
-                    rectangle.Y = screenHeight - texture.Height;
-                }*/
-
 
             }
             else
@@ -102,6 +76,7 @@ namespace DonkeyKong
                     position = destination;
                     moving = false;
                 }
+
             }
         }
 

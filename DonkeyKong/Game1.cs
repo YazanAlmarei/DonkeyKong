@@ -42,7 +42,7 @@ namespace DonkeyKong
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            graphics.PreferredBackBufferWidth = 1000;
+            graphics.PreferredBackBufferWidth = 1040;
             graphics.PreferredBackBufferHeight = 640;
 
         }
@@ -68,6 +68,8 @@ namespace DonkeyKong
             Texture2D emptyTex = Content.Load<Texture2D>("empty");
             Texture2D ladderTex = Content.Load<Texture2D>("Ladder");
             Texture2D playerTex = Content.Load<Texture2D>("SuperMarioFront");
+            Texture2D wallTex = Content.Load<Texture2D>("empty2");
+            Texture2D wallTex2 = Content.Load<Texture2D>("bridge2");
 
             theMonkey = Content.Load<Texture2D>("DonkeyKong");
             queen = Content.Load<Texture2D>("pauline");
@@ -102,6 +104,16 @@ namespace DonkeyKong
                         tiles[i, j] = new Tile(bridgeTileTex, new Vector2(bridgeTileTex.Width * i, bridgeTileTex.Height * j), true);
                     }
 
+                    if (strings[j][i] == 'W')
+                    {
+                        tiles[i, j] = new Tile(wallTex, new Vector2(wallTex.Width * i, wallTex.Height * j), true);
+                    }
+
+                    if (strings[j][i] == 'w')
+                    {
+                        tiles[i, j] = new Tile(wallTex2, new Vector2(wallTex2.Width * i, wallTex2.Height * j), true);
+                    }
+
                     else if (strings[j][i] == 'C')
                     {
                         tiles[i, j] = new Tile(bridgeLadderTex, new Vector2(bridgeLadderTex.Width * i, bridgeLadderTex.Height * j), false);
@@ -117,11 +129,11 @@ namespace DonkeyKong
                     {
                         tiles[i, j] = new Tile(ladderTex, new Vector2(ladderTex.Width * i, ladderTex.Height * j), false);
 
-                        player = new Player(playerTex, new Vector2(40, 600));
+                        
                     } 
                     
                 }
-                
+                player = new Player(playerTex, new Vector2(1000, 600));
 
             }
 
@@ -197,9 +209,9 @@ namespace DonkeyKong
                     }
                     
                     
-                    spriteBatch.DrawString(textFont, "Lives = " + lives, Vector2.Zero, Color.Red);
-                    spriteBatch.Draw(theMonkey, new Vector2(360, 100), Color.White);
-                    spriteBatch.Draw(queen, new Vector2(450, 15), Color.White);
+                    spriteBatch.DrawString(textFont, "Lives = " + lives, new Vector2(0, 25), Color.Red);
+                    spriteBatch.Draw(theMonkey, new Vector2(400, 100), Color.White);
+                    spriteBatch.Draw(queen, new Vector2(500, 15), Color.White);
                     player.Draw(spriteBatch);
 
                     break;
