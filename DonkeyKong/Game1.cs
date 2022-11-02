@@ -43,7 +43,7 @@ namespace DonkeyKong
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 1000;
-            graphics.PreferredBackBufferHeight = 663;
+            graphics.PreferredBackBufferHeight = 640;
 
         }
 
@@ -113,16 +113,11 @@ namespace DonkeyKong
                         tiles[i, j] = new Tile(emptyTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j), false);
                     }
 
-                    else if (strings[j][i] == 'W')
-                    {
-                        tiles[i, j] = new Tile(emptyTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j), false);
-                    }
-
                     else if (strings[j][i] == 'L')
                     {
                         tiles[i, j] = new Tile(ladderTex, new Vector2(ladderTex.Width * i, ladderTex.Height * j), false);
 
-                        player = new Player(playerTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j));
+                        player = new Player(playerTex, new Vector2(40, 600));
                     } 
                     
                 }

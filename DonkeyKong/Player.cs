@@ -13,6 +13,10 @@ namespace DonkeyKong
     {
         public Vector2 position;
         public Texture2D texture;
+        public Rectangle rectangle;
+
+        int screenWidth = 1000;
+        int screenHeight = 663;
 
         Vector2 destination;
         Vector2 direction;
@@ -61,6 +65,27 @@ namespace DonkeyKong
                 else if (Keyboard.GetState().IsKeyDown(Keys.Down))
                 {
                     ChangeDirection(new Vector2(0, 1));
+                }
+
+                rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+
+                if(rectangle.X <= 0)
+                {
+                    rectangle.X = 0;
+                }
+
+                if(rectangle.X + texture.Width >= screenWidth)
+                {
+                    rectangle.X = screenWidth - texture.Width;
+                }
+
+                if(rectangle.Y <= 0)
+                {
+                    rectangle.Y = 0;
+                }
+                if (rectangle.Y + texture.Height >= screenHeight)
+                {
+                    rectangle.Y = screenHeight - texture.Height;
                 }
 
 
