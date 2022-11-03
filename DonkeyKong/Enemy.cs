@@ -12,8 +12,8 @@ namespace DonkeyKong
 {
     public class Enemy
     {
-
-
+       
     }
-
 }
+
+

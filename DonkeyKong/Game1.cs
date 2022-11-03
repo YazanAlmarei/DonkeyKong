@@ -14,13 +14,15 @@ namespace DonkeyKong
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        Texture2D theMonkey;
-        Texture2D queen;
+        Texture2D monkeyTex;
+        Monkey monkey;
+
+        Texture2D queenTex;
+        Queen queen;
+
         Texture2D mainMenu;
         Texture2D winPic;
         Texture2D losePic;
-
-        Texture2D enemyTex;
 
         Player player;
         static Tile[,] tiles;
@@ -35,7 +37,7 @@ namespace DonkeyKong
 
         Random random;
 
-        public enum GameState { Menu = 0, Game = 1, PostGame = 2 }
+        public enum GameState { Menu = 0, Game = 1, PostGameWin = 2, PostGameLose = 3 }
 
 
 
@@ -47,7 +49,6 @@ namespace DonkeyKong
             IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 1040;
             graphics.PreferredBackBufferHeight = 640;
-
 
         }
 
@@ -74,13 +75,14 @@ namespace DonkeyKong
             Texture2D playerTex = Content.Load<Texture2D>("SuperMarioFront");
             Texture2D wallTex = Content.Load<Texture2D>("empty2");
             Texture2D wallTex2 = Content.Load<Texture2D>("bridge2");
-
-
             random = new Random();
-            enemyTex = Content.Load<Texture2D>("enemy");
 
-            theMonkey = Content.Load<Texture2D>("DonkeyKong");
-            queen = Content.Load<Texture2D>("pauline");
+            monkeyTex = Content.Load<Texture2D>("DonkeyKong");
+            monkey = new Monkey(monkeyTex, new Vector2(400, 100));
+
+            queenTex = Content.Load<Texture2D>("pauline");
+            queen = new Queen(queenTex, new Vector2(500, 15));
+
             textFont = Content.Load<SpriteFont>("File");
             mainMenu = Content.Load<Texture2D>("start");
             winPic = Content.Load<Texture2D>("win");
@@ -161,24 +163,32 @@ namespace DonkeyKong
                     break;
 
                 case GameState.Game:
-                    player.Update(gameTime);
+                   player.Update(gameTime);
+                   monkey.Update();
+                   queen.Update();
 
-
-                    //if mario touches pauline >> gameState = GameState.PostGame
-
-                    if (lives == 0 /*|| mario touches kong*/)
+                    if (player.playerRec.Intersects(monkey.monkeyRect))
                     {
-                        gameState = GameState.PostGame;
+                        gameState=GameState.PostGameLose;
+                    }
+
+                    if (player.playerRec.Intersects(queen.queenRect))
+                    {
+                        gameState = GameState.PostGameWin;
+                    }
+
+                    if (lives == 0)
+                    {
+                        gameState = GameState.PostGameLose;
                     }
 
 
                     break;
 
-                case GameState.PostGame:
-                    if (currentKeyboardState.IsKeyDown(Keys.Space) && oldKeyboardState.IsKeyUp(Keys.Space))
-                    {
-                        gameState = GameState.Menu;
-                    }
+                case GameState.PostGameWin:
+                    break;
+
+                case GameState.PostGameLose:
                     break;
 
             }
@@ -211,24 +221,24 @@ namespace DonkeyKong
 
 
                     spriteBatch.DrawString(textFont, "Lives = " + lives, new Vector2(0, 25), Color.Red);
-                    spriteBatch.Draw(theMonkey, new Vector2(400, 100), Color.White);
-                    spriteBatch.Draw(queen, new Vector2(500, 15), Color.White);
+                    monkey.Draw(spriteBatch);
+                    queen.Draw(spriteBatch);
                     player.Draw(spriteBatch);
 
                     break;
 
-                case GameState.PostGame:
+                case GameState.PostGameWin:
 
                     spriteBatch.Draw(winPic, new Vector2(50, 80), Color.White);
-                    spriteBatch.DrawString(textFont, "You Won! Press Space to start over", new Vector2(350, 100), Color.Green);
+                    spriteBatch.DrawString(textFont, "You Won!", new Vector2(450, 100), Color.Green);
 
-                    if (lives == 0 /*|| mario touches kong*/)
-                    {
-                        spriteBatch.Draw(losePic, Vector2.Zero, Color.White);
-                    }
 
                     break;
 
+                case GameState.PostGameLose:
+
+                    spriteBatch.Draw(losePic, new Vector2(35, -20), Color.White);
+                    break;
 
             }
 
