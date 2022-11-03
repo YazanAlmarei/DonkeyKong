@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct3D9;
+using SharpDX.DirectWrite;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,7 @@ using System.IO;
 namespace DonkeyKong
 {
     public class Game1 : Game
-    {      
+    {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
@@ -18,6 +19,10 @@ namespace DonkeyKong
         Texture2D mainMenu;
         Texture2D winPic;
         Texture2D losePic;
+
+        Texture2D enemyTex;
+        Enemy enemy;
+        List<Enemy> enemyList;
 
         Player player;
         static Tile[,] tiles;
@@ -34,7 +39,7 @@ namespace DonkeyKong
 
         public enum GameState { Menu = 0, Game = 1, PostGame = 2 }
 
-        
+
 
 
         public Game1()
@@ -44,6 +49,7 @@ namespace DonkeyKong
             IsMouseVisible = true;
             graphics.PreferredBackBufferWidth = 1040;
             graphics.PreferredBackBufferHeight = 640;
+
 
         }
 
@@ -71,17 +77,32 @@ namespace DonkeyKong
             Texture2D wallTex = Content.Load<Texture2D>("empty2");
             Texture2D wallTex2 = Content.Load<Texture2D>("bridge2");
 
+
+            random = new Random();
+            enemyTex = Content.Load<Texture2D>("enemy");
+            enemyList = new List<Enemy>();
+
+            for (int i = 0; i <= 10; i++)
+            {
+                int velocityX = random.Next(1, 3);
+                int velocityY = 0;
+                Vector2 velocity = new Vector2(velocityX, velocityY);
+
+                int positionX = 0;
+                int positionY = random.Next (100, 200);
+                Vector2 position = new Vector2(positionX, positionY);
+                enemy = new Enemy(enemyTex, velocity, position);
+
+                enemyList.Add(enemy);
+            }
+
+
             theMonkey = Content.Load<Texture2D>("DonkeyKong");
             queen = Content.Load<Texture2D>("pauline");
             textFont = Content.Load<SpriteFont>("File");
             mainMenu = Content.Load<Texture2D>("start");
             winPic = Content.Load<Texture2D>("win");
             losePic = Content.Load<Texture2D>("loose");
-
-
-            //var texture = Content.Load<Texture2D>("SuperMarioFront");
-            
-           
 
             List<string> strings = new List<string>();
             StreamReader sr = new StreamReader("mapTXT.txt");
@@ -98,7 +119,6 @@ namespace DonkeyKong
             {
                 for (int j = 0; j < tiles.GetLength(1); j++)
                 {
-
                     if (strings[j][i] == 'B')
                     {
                         tiles[i, j] = new Tile(bridgeTileTex, new Vector2(bridgeTileTex.Width * i, bridgeTileTex.Height * j), true);
@@ -128,10 +148,8 @@ namespace DonkeyKong
                     else if (strings[j][i] == 'L')
                     {
                         tiles[i, j] = new Tile(ladderTex, new Vector2(ladderTex.Width * i, ladderTex.Height * j), false);
+                    }
 
-                        
-                    } 
-                    
                 }
                 player = new Player(playerTex, new Vector2(1000, 600));
 
@@ -144,7 +162,7 @@ namespace DonkeyKong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            
+
             currentKeyboardState = Keyboard.GetState();
             random = new Random();
 
@@ -162,6 +180,11 @@ namespace DonkeyKong
 
                 case GameState.Game:
                     player.Update(gameTime);
+                    enemy.Update();
+                    foreach (Enemy enemy in enemyList)
+                    {
+                        enemy.Update();
+                    }
 
                     //if mario touches pauline >> gameState = GameState.PostGame
 
@@ -182,7 +205,7 @@ namespace DonkeyKong
 
             }
 
-                    base.Update(gameTime);
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -207,9 +230,15 @@ namespace DonkeyKong
                             tiles[i, j].Draw(spriteBatch);
                         }
                     }
-                    
-                    
+
+
                     spriteBatch.DrawString(textFont, "Lives = " + lives, new Vector2(0, 25), Color.Red);
+                    enemy.Draw(spriteBatch);
+                    foreach (Enemy enemy in enemyList)
+                    {
+                        enemy.Draw(spriteBatch);
+                    }
+
                     spriteBatch.Draw(theMonkey, new Vector2(400, 100), Color.White);
                     spriteBatch.Draw(queen, new Vector2(500, 15), Color.White);
                     player.Draw(spriteBatch);
@@ -220,18 +249,18 @@ namespace DonkeyKong
 
                     spriteBatch.Draw(winPic, new Vector2(50, 80), Color.White);
                     spriteBatch.DrawString(textFont, "You Won! Press Space to start over", new Vector2(350, 100), Color.Green);
-                    
-                    if(lives == 0 /*|| mario touches kong*/)
+
+                    if (lives == 0 /*|| mario touches kong*/)
                     {
                         spriteBatch.Draw(losePic, Vector2.Zero, Color.White);
                     }
-                    
+
                     break;
 
 
             }
 
-            
+
 
             spriteBatch.End();
 

@@ -13,6 +13,7 @@ namespace DonkeyKong
     {
         public Vector2 position;
         public Texture2D texture;
+        public Rectangle playerRec;
 
         Vector2 destination;
         Vector2 direction;
@@ -41,7 +42,7 @@ namespace DonkeyKong
 
         public void Update(GameTime gameTime)
         {
-
+            playerRec = new Rectangle((int)(position.X), (int)(position.Y), texture.Width, texture.Height);
 
             if (!moving)
             {
