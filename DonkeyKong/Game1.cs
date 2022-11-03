@@ -21,8 +21,6 @@ namespace DonkeyKong
         Texture2D losePic;
 
         Texture2D enemyTex;
-        Enemy enemy;
-        List<Enemy> enemyList;
 
         Player player;
         static Tile[,] tiles;
@@ -80,22 +78,6 @@ namespace DonkeyKong
 
             random = new Random();
             enemyTex = Content.Load<Texture2D>("enemy");
-            enemyList = new List<Enemy>();
-
-            for (int i = 0; i <= 10; i++)
-            {
-                int velocityX = random.Next(1, 3);
-                int velocityY = 0;
-                Vector2 velocity = new Vector2(velocityX, velocityY);
-
-                int positionX = 0;
-                int positionY = random.Next (100, 200);
-                Vector2 position = new Vector2(positionX, positionY);
-                enemy = new Enemy(enemyTex, velocity, position);
-
-                enemyList.Add(enemy);
-            }
-
 
             theMonkey = Content.Load<Texture2D>("DonkeyKong");
             queen = Content.Load<Texture2D>("pauline");
@@ -180,11 +162,7 @@ namespace DonkeyKong
 
                 case GameState.Game:
                     player.Update(gameTime);
-                    enemy.Update();
-                    foreach (Enemy enemy in enemyList)
-                    {
-                        enemy.Update();
-                    }
+
 
                     //if mario touches pauline >> gameState = GameState.PostGame
 
@@ -233,12 +211,6 @@ namespace DonkeyKong
 
 
                     spriteBatch.DrawString(textFont, "Lives = " + lives, new Vector2(0, 25), Color.Red);
-                    enemy.Draw(spriteBatch);
-                    foreach (Enemy enemy in enemyList)
-                    {
-                        enemy.Draw(spriteBatch);
-                    }
-
                     spriteBatch.Draw(theMonkey, new Vector2(400, 100), Color.White);
                     spriteBatch.Draw(queen, new Vector2(500, 15), Color.White);
                     player.Draw(spriteBatch);
