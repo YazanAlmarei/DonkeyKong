@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct3D9;
 using SharpDX.DirectWrite;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
@@ -29,6 +30,11 @@ namespace DonkeyKong
 
         SpriteFont textFont;
         int lives = 3;
+        float timer = 1f;
+
+        Texture2D enemyTex;
+        Enemy enemy;
+        List<Enemy> enemies = new List<Enemy>();
 
         MouseState mouseState;
         KeyboardState currentKeyboardState;
@@ -38,8 +44,6 @@ namespace DonkeyKong
         Random random;
 
         public enum GameState { Menu = 0, Game = 1, PostGameWin = 2, PostGameLose = 3 }
-
-
 
 
         public Game1()
@@ -57,8 +61,11 @@ namespace DonkeyKong
             return tiles[(int)vec.X / 40, (int)vec.Y / 40].bridgee;
         }
 
+
+
         protected override void Initialize()
         {
+
             // TODO: Add your initialization logic here
 
             base.Initialize();
@@ -83,10 +90,14 @@ namespace DonkeyKong
             queenTex = Content.Load<Texture2D>("pauline");
             queen = new Queen(queenTex, new Vector2(500, 15));
 
+            player = new Player(playerTex, new Vector2(1000, 600));
+
             textFont = Content.Load<SpriteFont>("File");
             mainMenu = Content.Load<Texture2D>("start");
             winPic = Content.Load<Texture2D>("win");
             losePic = Content.Load<Texture2D>("loose");
+
+            enemyTex = Content.Load<Texture2D>("enemy2");
 
             List<string> strings = new List<string>();
             StreamReader sr = new StreamReader("mapTXT.txt");
@@ -103,6 +114,7 @@ namespace DonkeyKong
             {
                 for (int j = 0; j < tiles.GetLength(1); j++)
                 {
+
                     if (strings[j][i] == 'B')
                     {
                         tiles[i, j] = new Tile(bridgeTileTex, new Vector2(bridgeTileTex.Width * i, bridgeTileTex.Height * j), true);
@@ -134,8 +146,14 @@ namespace DonkeyKong
                         tiles[i, j] = new Tile(ladderTex, new Vector2(ladderTex.Width * i, ladderTex.Height * j), false);
                     }
 
+                    else if (strings[j][i] == 'F')
+                    {
+                        tiles[i, j] = new Tile(emptyTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j), false);
+                        enemy = new Enemy(enemyTex, new Vector2(emptyTex.Width * i, emptyTex.Height * j), 1f);
+                        enemies.Add(enemy);
+                    }
+
                 }
-                player = new Player(playerTex, new Vector2(1000, 600));
 
             }
 
@@ -163,26 +181,40 @@ namespace DonkeyKong
                     break;
 
                 case GameState.Game:
-                   player.Update(gameTime);
-                   monkey.Update();
-                   queen.Update();
+                    player.Update(gameTime);
+                    monkey.Update();
+                    queen.Update();
 
-                    if (player.playerRec.Intersects(monkey.monkeyRect))
+
+                    if (Player.playerRec.Intersects(monkey.monkeyRect))
                     {
-                        gameState=GameState.PostGameLose;
+                        gameState = GameState.PostGameLose;
+
                     }
 
-                    if (player.playerRec.Intersects(queen.queenRect))
+                    if (Player.playerRec.Intersects(queen.queenRect))
                     {
                         gameState = GameState.PostGameWin;
+                    }
+
+                    Player.playerRec = new Rectangle((int)player.position.X, (int)player.position.Y, player.texture.Width, player.texture.Height);
+                    timer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                    foreach (Enemy enemy in enemies)
+                    {
+                        enemy.Update(gameTime);
+                        if (enemy.CollideEnemy(Player.playerRec) && timer < 0)
+                        {
+                            lives--;
+                            timer = 1f;
+                            
+                        }
                     }
 
                     if (lives == 0)
                     {
                         gameState = GameState.PostGameLose;
                     }
-
-
                     break;
 
                 case GameState.PostGameWin:
@@ -211,14 +243,21 @@ namespace DonkeyKong
                     break;
 
                 case GameState.Game:
+
+
                     for (int i = 0; i < tiles.GetLength(0); i++)
                     {
                         for (int j = 0; j < tiles.GetLength(1); j++)
                         {
                             tiles[i, j].Draw(spriteBatch);
                         }
+
                     }
 
+                    foreach(Enemy enemy in enemies)
+                    {
+                        enemy.Draw(spriteBatch);
+                    }
 
                     spriteBatch.DrawString(textFont, "Lives = " + lives, new Vector2(0, 25), Color.Red);
                     monkey.Draw(spriteBatch);
@@ -231,8 +270,6 @@ namespace DonkeyKong
 
                     spriteBatch.Draw(winPic, new Vector2(50, 80), Color.White);
                     spriteBatch.DrawString(textFont, "You Won!", new Vector2(450, 100), Color.Green);
-
-
                     break;
 
                 case GameState.PostGameLose:
@@ -241,8 +278,6 @@ namespace DonkeyKong
                     break;
 
             }
-
-
 
             spriteBatch.End();
 

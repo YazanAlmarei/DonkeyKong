@@ -9,21 +9,23 @@ using System.Threading.Tasks;
 
 namespace DonkeyKong
 {
-    public class Player
+    internal class Player
     {
         public Vector2 position;
         public Texture2D texture;
-        public Rectangle playerRec;
+        public static Rectangle playerRec;
 
         Vector2 destination;
         Vector2 direction;
-        float speed = 100.0f;
+        float speed = 400.0f;
         bool moving = false;
 
         public Player(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
             this.position = position;
+
+            
         }
 
         public void ChangeDirection(Vector2 dir)
@@ -31,13 +33,14 @@ namespace DonkeyKong
             direction = dir;
             Vector2 newDestination = position + direction * 40.0f;
 
-            
             if (!Game1.GetTileAtPosition(newDestination))
             {
                 destination = newDestination;
                 moving = true;
 
             }
+
+            
         }
 
         public void Update(GameTime gameTime)
